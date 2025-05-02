@@ -34,7 +34,7 @@ function App() {
           <Route path="/team" element={<><Header /><Team /></>} />
           <Route path="/claim" element={<Claim />} />
         </> : <> (
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           )</>}
