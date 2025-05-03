@@ -23,3 +23,33 @@ body label {
 body input {
     font-family: 'National Park', serif;
 }
+
+body button {
+    font-family: 'National Park', serif;
+    cursor: pointer;
+}
+
+body select {
+    font-family: 'National Park', serif;
+}
+
+body option {
+    font-family: 'National Park', serif;
+}
+
+body textarea {
+    font-family: 'National Park', serif;
+}
+
+body input[type="text"] {
+    font-family: 'National Park', serif;
+}
+
+body th {
+    font-family: 'National Park', serif;
+}
+
+body td {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}

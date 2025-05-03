@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { Eye, EyeOff, LogIn, Mail, Lock } from 'lucide-react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { API_URL } from '../../api';
+import { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 export default function LoginForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const validateForm = () => {
         const newErrors = {};
@@ -28,13 +33,50 @@ export default function LoginForm() {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (validateForm()) {
-            setIsLoading(true);
+            // setIsLoading(true);
 
-            // Simulate API call
+            // Simulate API 
+
+
+
+
+
+            try {
+                const response = await axios.post(`${API_URL}/login-check`, {
+                    email,
+                    password
+                });
+
+                const data = response.data;
+                console.log(data);
+                if (data.message == 'Login successful') {
+                    console.log('Login successful:', data);
+                    localStorage.setItem('isLoggedInClaimsEngineUser', true);
+                    localStorage.setItem('claimsEngineUserWholeData', JSON.stringify(data.user));
+                    localStorage.setItem('claimsEngineUser', data.user.email);
+                    console.log(data);
+                    toast.success('Login successful');
+                    navigate('/');
+                    window.location.reload();
+
+                }
+                else {
+                    throw new Error('Login failed User/Password is incorrect');
+                }
+            }
+            catch (error) {
+                console.error('Login failed:', error);
+                toast.error('Login failed User/Password is incorrect');
+                setIsLoading(false);
+            }
+            finally {
+                setIsLoading(false);
+            }
+
             setTimeout(() => {
                 console.log('Login submitted:', { email, password });
                 setIsLoading(false);
@@ -169,6 +211,7 @@ export default function LoginForm() {
 
 
             </div>
+            <Toaster />
         </div>
     );
 }

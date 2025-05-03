@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Clock, FileText, AlertCircle, PhoneCall, Mail, MapPin, Users } from 'lucide-react'
 import axios from 'axios'
+import { API_URL } from '../../api.js';
+import { Toaster, toast } from 'react-hot-toast';
+
 
 function Claim() {
     const location = useLocation();
@@ -13,7 +16,6 @@ function Claim() {
     const [selectedTeamMember, setSelectedTeamMember] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const API_URL = 'https://claims-engine-backend-1.onrender.com/api';
 
     // Fetch team data and current user
     useEffect(() => {
@@ -30,7 +32,7 @@ function Claim() {
                 throw new Error('User data not found in local storage');
             }
 
-            const parsedUser = JSON.parse(claimsUser);
+            const parsedUser = claimsUser;
             setCurrentUser(parsedUser);
             const adminEmail = parsedUser;
 
@@ -60,11 +62,7 @@ function Claim() {
     };
 
     const assignTeamMember = async () => {
-        // Check if current user is saksham@claims.com
-        if (currentUser?.email === 'saksham@claims.com') {
-            console.error('Unauthorized: You do not have permission to assign claims');
-            return;
-        }
+
 
         try {
             const assignedPerson = team.find(t => t._id === selectedTeamMember);
@@ -74,9 +72,9 @@ function Claim() {
                 return;
             }
 
-            await axios.post(`${API_URL}/claims`, {
-                ...claimData,
-                assignedTo: assignedPerson.email
+            await axios.post(`${API_URL}/assign-to-user`, {
+                "claimId": claimData.id,
+                "assignedUnder": assignedPerson.email
             });
 
             // Update local state
@@ -88,10 +86,12 @@ function Claim() {
             // Close modal and update UI
             setShowAssignModal(false);
             // Update the location state with new claim data
+            toast.success('Claim assigned to team member successfully');
             navigate(location.pathname, { state: updatedClaimData, replace: true });
 
         } catch (err) {
             console.error('Error assigning team member:', err);
+            toast.error('Error assigning team member');
         }
     };
 
@@ -271,18 +271,7 @@ function Claim() {
             <div className="bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions</h2>
                 <div className="flex flex-wrap gap-3">
-                    <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
-                        Update Status
-                    </button>
-                    <button className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors">
-                        Approve Claim
-                    </button>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors">
-                        Reject Claim
-                    </button>
-                    <button className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
-                        Request Additional Information
-                    </button>
+
                     <button
                         className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center gap-1"
                         onClick={() => setShowAssignModal(true)}
@@ -307,6 +296,9 @@ function Claim() {
 
             {/* Render modal when needed */}
             {showAssignModal && <AssignmentModal />}
+
+            <Toaster />
+
         </div>
     )
 }

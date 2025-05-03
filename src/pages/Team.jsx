@@ -27,7 +27,7 @@ function Team() {
                 throw new Error('User data not found in local storage');
             }
 
-            const parsedUser = JSON.parse(claimsUser);
+            const parsedUser = claimsUser;
             const adminEmail = parsedUser;
 
             fetch(`${API_URL}/teamData?adminEmail=${encodeURIComponent(adminEmail)}`)
@@ -69,7 +69,7 @@ function Team() {
                 throw new Error('User data not found in local storage');
             }
 
-            const parsedUser = JSON.parse(claimsUser);
+            const parsedUser = claimsUser;
             const adminEmail = parsedUser;
 
             // Structure the request body according to backend expectations

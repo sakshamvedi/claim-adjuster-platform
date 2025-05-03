@@ -4,6 +4,7 @@ import { API_URL } from '../../api.js';
 import axios from 'axios';
 
 import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 export default function SignupForm() {
     const [formData, setFormData] = useState({
         firstName: '',
@@ -89,16 +90,24 @@ export default function SignupForm() {
 
                 if (response.status === 201) {
                     localStorage.setItem('isLoggedInClaimsEngineUser', 'true');
-                    localStorage.setItem('claimsEngineUser', JSON.stringify(formData.email));
-                    navigate('/home');
+                    localStorage.setItem('claimsEngineUser', formData.email);
+                    console.log(response.data.user);
+                    localStorage.setItem('claimsEngineUserWholeData', JSON.stringify(response.data.user));
+                    setIsLoading(false);
+                    toast.success('Signup successful');
+                    navigate('/');
+                    window.location.reload();
+
                 }
                 else {
                     setIsLoading(false);
+                    toast.error('Signup failed');
                 }
             }
             catch (error) {
                 setIsLoading(false);
                 console.error('Signup failed:', error);
+                toast.error('Signup failed');
             }
 
 
@@ -347,7 +356,7 @@ export default function SignupForm() {
 
 
             </div>
-
+            <Toaster />
         </div>
     );
 }

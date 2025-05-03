@@ -1,8 +1,31 @@
-import React, { useState } from 'react';
+import { Bell } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL } from '../../api.js';
 
 function Header() {
     const [activeTab, setActiveTab] = useState('home');
+    const [notificationCount, setNotificationCount] = useState(0);
+    const claimsUser = localStorage.getItem('claimsEngineUserWholeData');
+    const parsedUser = JSON.parse(claimsUser);
+
+
+
+    useEffect(() => {
+        try {
+            const fetchNotificationCount = async () => {
+                const userId = parsedUser._id;
+                const response = await axios.get(`${API_URL}/get-notifications/${userId}`);
+                console.log(response.data);
+                const notificationFiltered = response.data.filter(notification => notification.status == "pending");
+                setNotificationCount(notificationFiltered.length);
+            };
+            fetchNotificationCount();
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
 
     return (
         <header className="bg-blue-600 text-white shadow-lg">
@@ -51,8 +74,19 @@ function Header() {
                         </ul>
                     </nav>
 
+                    {/* Notification Button  */}
+
+
                     {/* User Profile Section */}
                     <div className="flex items-center space-x-3">
+                        <button className=" text-blue-600 px-4 py-2 rounded-md relative">
+                            <label className='text-white bg-red-500 rounded-full h-[20px] w-[20px] text-xs flex items-center justify-center absolute -top-2 -right-[-5px]'>{notificationCount}</label>
+                            <Link to="/notification">
+                                <Bell size={20} color='white' />
+                            </Link>
+
+                        </button>
+
                         <span className="hidden md:inline">Welcome, Admin</span>
                         <div className="w-8 h-8 rounded-full bg-white/30 flex items-center justify-center">
                             <span className="text-sm font-medium">A</span>

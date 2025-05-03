@@ -3,7 +3,7 @@ import { Search, Filter, Clipboard, FileText, Clock, AlertCircle, CheckCircle, A
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // API URL for claims data
-const API_URL = 'https://claims-engine-backend-1.onrender.com/api';
+import { API_URL } from '../../api';
 
 // Status badge component
 const StatusBadge = ({ status }) => {
@@ -36,7 +36,7 @@ const ClaimCard = ({ claim }) => {
     const handleViewDetails = () => {
         navigate('/claim', {
             state: {
-                id: claim.id || claim._id,
+                id: claim._id,
                 name: claim.name,
                 phone: claim.phone,
                 email: claim.email,
@@ -128,10 +128,10 @@ export default function Home() {
 
                 // Filter claims assigned to current user (using the new data structure)
                 const filterHisClaims = dataClaims.filter(claim =>
-                    claim.assignedTo == claimsUser.substring(1, claimsUser.length - 1));
-                console.log(filterHisClaims);
+                    claim.assignedTo == claimsUser);
+                const currentClaimsStatus = filterHisClaims.filter(claim => claim.status == "assigned");
 
-                setClaims(filterHisClaims);
+                setClaims(currentClaimsStatus);
                 setError(null);
             } catch (err) {
                 setError('Failed to fetch claims data. Please try again later.');
@@ -259,7 +259,7 @@ export default function Home() {
 
             {/* Filters and Search */}
             <div className="bg-white p-4 rounded-lg shadow mb-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <Search className="w-4 h-4 text-gray-400" />
@@ -273,22 +273,6 @@ export default function Home() {
                         />
                     </div>
 
-                    <div className="relative">
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <Filter className="w-4 h-4 text-gray-400" />
-                        </div>
-                        <select
-                            className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-gray-50 p-2 text-sm"
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                        >
-                            <option value="all">All Statuses</option>
-                            <option value="pending">Pending</option>
-                            <option value="assigned">Assigned</option>
-                            <option value="rejected">Rejected</option>
-                            <option value="in review">In Review</option>
-                        </select>
-                    </div>
 
                     <div className="flex space-x-2">
                         <button

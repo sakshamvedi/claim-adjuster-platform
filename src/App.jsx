@@ -5,6 +5,7 @@ import Header from './Components/Header';
 import Signup from './authentication/Signup';
 import './App.css';
 import Claim from './Cart/Claim';
+import Notification from './Cart/Notification';
 import Team from './pages/Team';
 function App() {
   const isLoggedIn = localStorage.getItem('isLoggedInClaimsEngineUser');
@@ -27,12 +28,11 @@ function App() {
           }
 
         />
-
-
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<><Header /><Home /></>} />
           <Route path="/team" element={<><Header /><Team /></>} />
           <Route path="/claim" element={<Claim />} />
+          <Route path="/notification" element={<><Header /><Notification /></>} />
         </> : <> (
           <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
