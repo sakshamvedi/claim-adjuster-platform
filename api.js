@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:8000/api';
+export const API_URL = 'ttps://claims-engine-backend-1.onrender.com/api';
 // https://claims-engine-backend-1.onrender.com/api
 //https://claims-engine-backend-1.onrender.com/api
 
