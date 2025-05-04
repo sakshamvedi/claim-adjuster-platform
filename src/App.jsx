@@ -34,7 +34,7 @@ function App() {
           <Route path="/claim" element={<Claim />} />
           <Route path="/notification" element={<><Header /><Notification /></>} />
         </> : <> (
-          <Route path="/" element={<Signup />} />
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           )</>}

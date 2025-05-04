@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../../api.js';
+import Logout from '../authentication/Logout.jsx';
 
 function Header() {
     const [activeTab, setActiveTab] = useState('home');
@@ -91,6 +92,7 @@ function Header() {
                         <div className="w-8 h-8 rounded-full bg-white/30 flex items-center justify-center">
                             <span className="text-sm font-medium">A</span>
                         </div>
+                        <Logout />
                     </div>
                 </div>
             </div>
