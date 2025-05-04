@@ -58,6 +58,7 @@ export default function LoginForm() {
                     localStorage.setItem('isLoggedInClaimsEngineUser', true);
                     localStorage.setItem('claimsEngineUserWholeData', JSON.stringify(data.user));
                     localStorage.setItem('claimsEngineUser', data.user.email);
+                    localStorage.setItem('xxaabbxxttokenrightadsssdsdmkzzddd', true);
                     console.log(data);
                     toast.success('Login successful');
                     navigate('/');
@@ -199,6 +200,12 @@ export default function LoginForm() {
                         </button>
                     </div>
                 </form>
+
+                <Link to="/individual-claim-adjuster">
+                    <div className='flex items-center justify-center'>
+                        <button className='flex items-center gap-2 text-white bg-green-500 rounded-full px-4 py-2'> Login as a Individual Claim Adjuster</button>
+                    </div>
+                </Link>
 
                 <div className="text-center mt-4">
                     <p className="text-sm text-gray-600">

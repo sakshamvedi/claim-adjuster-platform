@@ -4,7 +4,7 @@ import { Clock, FileText, AlertCircle, PhoneCall, Mail, MapPin, Users } from 'lu
 import axios from 'axios'
 import { API_URL } from '../../api.js';
 import { Toaster, toast } from 'react-hot-toast';
-
+import checkAdmin from '../hooks/checkAdmin';
 
 function Claim() {
     const location = useLocation();
@@ -17,8 +17,12 @@ function Claim() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const isAdmin = checkAdmin();
+
+
     // Fetch team data and current user
     useEffect(() => {
+
         fetchTeamData();
     }, []);
 
@@ -268,28 +272,30 @@ function Claim() {
             </div>
 
             {/* Actions */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions</h2>
-                <div className="flex flex-wrap gap-3">
+            {isAdmin && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions</h2>
+                    <div className="flex flex-wrap gap-3">
 
-                    <button
-                        className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center gap-1"
-                        onClick={() => setShowAssignModal(true)}
-                    >
-                        <Users className="h-4 w-4" />
-                        Assign to Team Member
-                    </button>
+                        <button
+                            className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors flex items-center gap-1"
+                            onClick={() => setShowAssignModal(true)}
+                        >
+                            <Users className="h-4 w-4" />
+                            Assign to Team Member
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Display assigned person if available */}
-            {claimData.assignedTo && (
+            {claimData.assignedUnder && (
                 <div className="bg-white p-6 rounded-lg shadow-md mt-6">
                     <h2 className="text-xl font-semibold text-gray-900 mb-4">Assignment</h2>
                     <div className="flex items-center gap-2">
                         <Users className="h-5 w-5 text-gray-500" />
                         <span className="text-gray-600">Assigned to:</span>
-                        <span className="font-medium">{claimData.assignedTo}</span>
+                        <span className="font-medium">{claimData.assignedUnder}</span>
                     </div>
                 </div>
             )}

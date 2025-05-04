@@ -7,8 +7,11 @@ import './App.css';
 import Claim from './Cart/Claim';
 import Notification from './Cart/Notification';
 import Team from './pages/Team';
+import Individual_claim_login from './authentication/Individual_claim_login';
+import Not_allowed from './Helpers/Not_allowed';
 function App() {
   const isLoggedIn = localStorage.getItem('isLoggedInClaimsEngineUser');
+  const isAdmin = localStorage.getItem('xxaabbxxttokenrightadsssdsdmkzzddd');
 
   return (
     <BrowserRouter>
@@ -30,14 +33,18 @@ function App() {
         />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<><Header /><Home /></>} />
-          <Route path="/team" element={<><Header /><Team /></>} />
+          <Route path="/team" element={isAdmin == "true" ? <><Header /><Team /></> : <> <Header /> <Not_allowed /> </>} />
           <Route path="/claim" element={<Claim />} />
           <Route path="/notification" element={<><Header /><Notification /></>} />
         </> : <> (
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/individual-claim-adjuster" element={<Individual_claim_login />} />
           )</>}
+
+
+
       </Routes>
     </BrowserRouter>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, Clipboard, FileText, Clock, AlertCircle, CheckCircle, ArrowDownUp, ChevronRight } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 // API URL for claims data
 import { API_URL } from '../../api';
 
@@ -127,11 +128,21 @@ export default function Home() {
                 }
 
                 // Filter claims assigned to current user (using the new data structure)
-                const filterHisClaims = dataClaims.filter(claim =>
-                    claim.assignedTo == claimsUser);
-                const currentClaimsStatus = filterHisClaims.filter(claim => claim.status == "assigned");
 
-                setClaims(currentClaimsStatus);
+                const checkIfAdmin = localStorage.getItem('xxaabbxxttokenrightadsssdsdmkzzddd');
+                if (checkIfAdmin == "true") {
+                    const filterHisClaims = dataClaims.filter(claim =>
+                        claim.assignedTo == claimsUser);
+                    const currentClaimsStatus = filterHisClaims.filter(claim => claim.status == "assigned");
+
+                    setClaims(currentClaimsStatus);
+                }
+                else if (checkIfAdmin == "false") {
+                    const filterHisClaims = dataClaims.filter(claim =>
+                        claim.assignedUnder == claimsUser);
+                    const currentClaimsStatus = filterHisClaims.filter(claim => claim.status == "assigned");
+                    setClaims(currentClaimsStatus);
+                }
                 setError(null);
             } catch (err) {
                 setError('Failed to fetch claims data. Please try again later.');

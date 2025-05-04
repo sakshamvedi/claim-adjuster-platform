@@ -67,6 +67,17 @@ function Notification() {
                 status: 'assigned'
             });
 
+            const body = {
+                "email": claimsData[claimId].email,
+                "name": claimsData[claimId].name,
+                "assignedTo": claimsData[claimId].assignedTo,
+                "claimNumber": claimsData[claimId]._id,
+                "claimDescription": claimsData[claimId].description,
+            }
+
+            await axios.post(`${API_URL}/send-mail`, body);
+            console.log(body);
+
             // Refresh notifications
             setLoading(false);
             fetchNotifications();
