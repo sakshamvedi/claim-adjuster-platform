@@ -73,6 +73,7 @@ function Notification() {
                 "assignedTo": claimsData[claimId].assignedTo,
                 "claimNumber": claimsData[claimId]._id,
                 "claimDescription": claimsData[claimId].description,
+                "trackingLink": `https://claim-adjuster-platform.vercel.app/progress-tracking/${claimId}`
             }
 
             await axios.post(`${API_URL}/send-mail`, body);
