@@ -19,7 +19,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
 
-
+        <Route path="/progress-tracking/:id" element={<Progress_Tracking_Page />} />
 
         {/* Protected Route */}
         {isLoggedIn == "true" ? <>  <Route
@@ -37,14 +37,16 @@ function App() {
           <Route path="/team" element={isAdmin == "true" ? <><Header /><Team /></> : <> <Header /> <Not_allowed /> </>} />
           <Route path="/claim" element={<Claim />} />
           <Route path="/notification" element={<><Header /><Notification /></>} />
-          <Route path="/progress-tracking/:id" element={<Progress_Tracking_Page />} />
+
         </> : <> (
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/individual-claim-adjuster" element={<Individual_claim_login />} />
 
-          )</>}
+          )</>
+
+        }
 
 
 
